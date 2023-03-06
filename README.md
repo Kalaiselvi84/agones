@@ -40,6 +40,8 @@ Documentation can be found on the [Agones website](https://agones.dev/site/docs/
 
 ## Code of Conduct
 
+## Code of Conduct
+
 Participation in this project comes under the [Contributor Covenant Code of Conduct](code-of-conduct.md)
 
 ## Reporting Security Issues
