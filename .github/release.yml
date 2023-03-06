@@ -2,6 +2,11 @@ changelog:
   exclude:
     labels:
       - area/meta
+      - duplicate
+      - question
+      - invalid
+      - wontfix
+      - priority/wontfix
   categories:
     - title: Breaking Changes
       labels:
@@ -9,9 +14,13 @@ changelog:
     - title: Implemented enhancements
       labels:
         - enhancement
+        - kind/feature
     - title: Fixed bugs
       labels:
         - bug
+    - title: Security
+      labels:
+        - area/security
     - title: Other
       labels:
         - "*"
