@@ -13,7 +13,6 @@ changelog:
         - kind/breaking
     - title: Implemented enhancements
       labels:
-        - enhancement
         - kind/feature
     - title: Fixed bugs
       labels:
