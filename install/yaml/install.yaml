@@ -12,6 +12,7 @@ spec:
       agones.dev/safe-to-evict: "false"
 ---
 # Source: agones/templates/service/allocation.yaml
+# Source: agones/templates/service/allocation.yaml
 # Create a ServiceAccount that will be bound to the above role
 apiVersion: v1
 kind: ServiceAccount
