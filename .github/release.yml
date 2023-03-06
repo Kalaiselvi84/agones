@@ -10,14 +10,14 @@ changelog:
   categories:
     - title: Breaking Changes
       labels:
-        - breaking
+        - kind/breaking
     - title: Implemented enhancements
       labels:
         - enhancement
         - kind/feature
     - title: Fixed bugs
       labels:
-        - bug
+        - kind/bug
     - title: Security
       labels:
         - area/security
