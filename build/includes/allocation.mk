@@ -24,6 +24,7 @@ build_base_version = $(call sha,$(build_path)/build-sdk-images/tool/base/Dockerf
 build_base_tag = agones-build-allocation-base:$(build_base_version)
 
 # Calculate sha hash of sha hashes of all files in a specified ALLOCATION_FOLDER
+# Calculate sha hash of sha hashes of all files in a specified ALLOCATION_FOLDER
 allocation_build_folder = build-allocation-images/
 sdk_build_folder = build-sdk-images
 build_allocation_version = $(call sha_dir,$(build_path)/$(allocation_build_folder)/$(ALLOCATION_FOLDER)/*)
