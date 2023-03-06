@@ -91,6 +91,7 @@ and copy it into a release issue. Fill in relevant values, found inside {}
 - [ ] Run `make gen-install gen-api-docs`
 - [ ] Create PR with these changes, and merge them with approval
 - [ ] Close this issue.
+- [ ] Closed
 - [ ] Close the current milestone. _Congratulations!_ - the release is now complete! :tada: :clap: :smile: :+1:
 
 [values]: https://github.com/googleforgames/agones/blob/main/install/helm/agones/values.yaml#L33
