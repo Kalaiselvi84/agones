@@ -21,6 +21,10 @@
 #
 # For a full reference and details: https://agones.dev/site/docs/reference/fleet/
 #
+#
+# For a full reference and details: https://agones.dev/site/docs/reference/fleet/
+#
+
 
 apiVersion: "agones.dev/v1"
 kind: Fleet
