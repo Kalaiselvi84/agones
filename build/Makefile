@@ -15,6 +15,9 @@
 #
 # Makefile for building, testing and developing Agones
 #
+#
+# Makefile for building, testing and developing Agones
+#
 
 #  __     __         _       _     _
 #  \ \   / /_ _ _ __(_) __ _| |__ | | ___ ___
