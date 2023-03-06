@@ -1,6 +1,6 @@
 # Agones Release Management
 
-# Release Cadence
+# Release Cadence extra
 
 - Versioned releases will occur every 6 weeks
 - Releases occur on a Tuesday.
