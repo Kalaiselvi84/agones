@@ -1,4 +1,7 @@
 changelog:
+  exclude:
+    labels:
+      - area/meta
   categories:
     - title: Breaking Changes
       labels:
