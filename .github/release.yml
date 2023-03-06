@@ -2,13 +2,13 @@ changelog:
   categories:
     - title: Breaking Changes
       labels:
-        - kind/breaking
+        - breaking
     - title: Implemented enhancements
       labels:
-        - kind/feature
+        - enhancement
     - title: Fixed bugs
       labels:
-        - kind/bug
+        - bug
     - title: Other
       labels:
         - "*"
