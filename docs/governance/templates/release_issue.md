@@ -92,7 +92,7 @@ and copy it into a release issue. Fill in relevant values, found inside {}
 - [ ] Create PR with these changes, and merge them with approval
 - [ ] Close this issue.
 - [ ] Close the current milestone. _Congratulations!_ - the release is now complete! :tada: :clap: :smile: :+1:
-- [ ] closed the issue
+
 [values]: https://github.com/googleforgames/agones/blob/main/install/helm/agones/values.yaml#L33
 [chart]: https://github.com/googleforgames/agones/blob/main/install/helm/agones/Chart.yaml
 [list]: https://groups.google.com/forum/#!forum/agones-discuss
