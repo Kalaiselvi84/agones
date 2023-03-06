@@ -20,6 +20,3 @@ changelog:
     - title: Security
       labels:
         - area/security
-    - title: Other
-      labels:
-        - "*"
