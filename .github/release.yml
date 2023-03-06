@@ -9,3 +9,6 @@ changelog:
     - title: Fixed bugs
       labels:
         - kind/bug
+    - title: Other
+      labels:
+        - "*"
