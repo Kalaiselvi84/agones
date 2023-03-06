@@ -10,7 +10,7 @@ tasks you may wish to accomplish.
 Table of Contents
 =================
 
-  * [Building on Different Platforms](#building-on-different-platforms)
+  * [Building on Different Platforms](#building-on-different-platforms---)
      * [Linux](#linux)
      * [Windows](#windows)
      * [macOS](#macos)
