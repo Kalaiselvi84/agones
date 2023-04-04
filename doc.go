@@ -14,5 +14,6 @@
  * limitations under the License.
  */
 
+# This is to test auto update branch
 // Package agones is a library for hosting, running and scaling dedicated game servers on Kubernetes.
 package agones // import "agones.dev/agones"
