@@ -27,7 +27,7 @@ For more details on why this project was written, read the
 - Gameserver specific metric exports and dashboards for ops teams
 
 ## Usage
-
+## Update branch check
 Documentation can be found on the [Agones website](https://agones.dev/site/docs/).
 
 ## Get involved
