@@ -1,5 +1,6 @@
 # This file contains all available configuration options
 # with their default values.
+#TEST FOR UPDATE BRANCH
 
 # options for analysis running
 run:
