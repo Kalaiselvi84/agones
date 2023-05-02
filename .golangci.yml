@@ -1,5 +1,6 @@
 # This file contains all available configuration options
 # with their default values.
+# stop milestone test6
 
 # options for analysis running
 run:
