@@ -5,46 +5,14 @@ on:
     types:
       - opened
       - reopened
-
 jobs:
-  label-pull-requests:
+  build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - name: Label Pull Requests
-        run: |
-          # Get the pull request content
-          content=$(gh pr view --json "$PR_NUMBER" | jq -r '.body')
-
-          # Check if the content contains the `/kind` keyword
-          if [[ $content =~ /kind/ ]]; then
-            # Get the kind of pull request
-            kind=${content##*/kind=}
-
-            # Apply the appropriate label
-            case "$kind" in
-              feature)
-                gh pr label add "$PR_NUMBER" kind/feature
-                ;;
-              bug)
-                gh pr label add "$PR_NUMBER" kind/bug
-                ;;
-              breaking)
-                gh pr label add "$PR_NUMBER" kind/breaking
-                ;;
-              cleanup)
-                gh pr label add "$PR_NUMBER" kind/cleanup
-                ;;                
-              documentation)
-                gh pr label add "$PR_NUMBER" kind/documentation
-                ;;
-              hotfix)
-                gh pr label add "$PR_NUMBER" kind/hotfix
-                ;;
-              *)
-                echo "Unknown kind of pull request"
-                ;;
-            esac
-          fi
-        env:
-          GH_TOKEN: ${{ secrets.AGONES_BOT }}
+      - uses: Renato66/auto-label@v2
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          ignore-comments: true
+          labels-synonyms: '{"bug":["error","need fix","not working"],"enhancement":["upgrade"],"question":["help"]}'
+          labels-not-allowed: '["good first issue"]'
+          default-labels: '["help wanted"]'
