@@ -17,23 +17,23 @@ jobs:
           content=$(gh pr show --content --json "$PR_NUMBER")
 
           # Check if the content contains the `/kind` keyword
-          if [[ <span class="math-inline">content \=\~ /kind/ \]\]; then
-            \# Get the kind of pull request
-            kind\=</span>{content##*/kind=}
+          if [[ $content =~ /kind/ ]]; then
+            # Get the kind of pull request
+            kind=${content##*/kind=}
 
             # Apply the appropriate label
-            switch "$kind" {
-              feature {
+            case "$kind" in
+              feature)
                 gh pr label add "$PR_NUMBER" feature
-              }
-              bug {
+                ;;
+              bug)
                 gh pr label add "$PR_NUMBER" bug
-              }
-              breaking {
+                ;;
+              breaking)
                 gh pr label add "$PR_NUMBER" breaking
-              }
-              default {
+                ;;
+              *)
                 echo "Unknown kind of pull request"
-              }
-            }
+                ;;
+            esac
           fi
