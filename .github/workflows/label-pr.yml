@@ -14,13 +14,13 @@ jobs:
       - name: Label Pull Requests
         run: |
           # Get the pull request content
-          content=$(gh pr show --content --json "$PR_NUMBER")
-
+          content=$(gh pr show --json "$PR_NUMBER" | jq -r '.body')
+  
           # Check if the content contains the `/kind` keyword
           if [[ $content =~ /kind/ ]]; then
             # Get the kind of pull request
             kind=${content##*/kind=}
-
+  
             # Apply the appropriate label
             case "$kind" in
               feature)
@@ -37,3 +37,5 @@ jobs:
                 ;;
             esac
           fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
