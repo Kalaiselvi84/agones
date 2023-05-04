@@ -1,0 +1,39 @@
+name: Label Pull Requests
+
+on:
+  pull_request:
+    types:
+      - opened
+      - reopened
+
+jobs:
+  label-pull-requests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Label Pull Requests
+        run: |
+          # Get the pull request content
+          content=$(gh pr get --content --json "$PR_NUMBER")
+
+          # Check if the content contains the `/kind` keyword
+          if [[ <span class="math-inline">content \=\~ /kind/ \]\]; then
+            \# Get the kind of pull request
+            kind\=</span>{content##*/kind=}
+
+            # Apply the appropriate label
+            switch "$kind" {
+              feature {
+                gh pr label add "$PR_NUMBER" feature
+              }
+              bug {
+                gh pr label add "$PR_NUMBER" bug
+              }
+              breaking {
+                gh pr label add "$PR_NUMBER" breaking
+              }
+              default {
+                echo "Unknown kind of pull request"
+              }
+            }
+          fi
