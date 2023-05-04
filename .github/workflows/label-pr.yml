@@ -38,4 +38,4 @@ jobs:
             esac
           fi
         env:
-          GITHUB_TOKEN: ${{ secrets.ACTION_USER_TOKEN }}
+          token: ${{ secrets.ACTION_USER_TOKEN }}
