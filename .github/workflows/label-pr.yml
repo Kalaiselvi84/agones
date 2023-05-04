@@ -15,22 +15,31 @@ jobs:
         run: |
           # Get the pull request content
           content=$(gh pr view --json "$PR_NUMBER" | jq -r '.body')
-  
+
           # Check if the content contains the `/kind` keyword
           if [[ $content =~ /kind/ ]]; then
             # Get the kind of pull request
             kind=${content##*/kind=}
-  
+
             # Apply the appropriate label
             case "$kind" in
               feature)
-                gh pr label add "$PR_NUMBER" feature
+                gh pr label add "$PR_NUMBER" kind/feature
                 ;;
               bug)
-                gh pr label add "$PR_NUMBER" bug
+                gh pr label add "$PR_NUMBER" kind/bug
                 ;;
               breaking)
-                gh pr label add "$PR_NUMBER" breaking
+                gh pr label add "$PR_NUMBER" kind/breaking
+                ;;
+              cleanup)
+                gh pr label add "$PR_NUMBER" kind/cleanup
+                ;;                
+              documentation)
+                gh pr label add "$PR_NUMBER" kind/documentation
+                ;;
+              hotfix)
+                gh pr label add "$PR_NUMBER" kind/hotfix
                 ;;
               *)
                 echo "Unknown kind of pull request"
