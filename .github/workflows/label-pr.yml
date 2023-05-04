@@ -38,4 +38,4 @@ jobs:
             esac
           fi
         env:
-          token: ${{ secrets.ACTION_USER_TOKEN }}
+          GH_TOKEN: ${{ secrets.AGONES_BOT }}
