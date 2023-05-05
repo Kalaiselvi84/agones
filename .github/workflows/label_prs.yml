@@ -16,11 +16,18 @@ jobs:
 
       - name: Check for kind
         run: |
+          # Get the body of the PR
+          body=$(github api get /repos/$GITHUB_REPOSITORY/issues/$GITHUB_PR_ID | jq -r .body)
+
+          # Check if the body contains the `/kind` keyword
           if [[ $body =~ '\/kind (breaking|feature|bug|cleanup|documentation|hotfix)/' ]]; then
-            echo "Found kind: $BASH_REMATCH[1]"
+            # Get the kind of the PR
+            kind=${BASH_REMATCH[1]}
+
             # Label the PR
             github api post /repos/$GITHUB_REPOSITORY/issues/$GITHUB_PR_ID/labels \
-              -f name=$BASH_REMATCH[1]
+              -f name=$kind
           else
+            # No kind found
             echo "No kind found"
           fi
