@@ -10,14 +10,12 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      # Extract /kind label and map to associated label
       - name: Apply kind label to PR
         uses: actions/github-script@v5
         with:
           script: |
             const { context, github } = require('@actions/github');
 
-            // Get the label to apply based on the value of the /kind label
             const prLabels = context.payload.pull_request.labels.map(label => label.name);
             let kindLabel;
             if (prLabels.includes('/kind breaking')) {
@@ -34,7 +32,6 @@ jobs:
               kindLabel = 'kind/hotfix';
             }
 
-            // If a matching kind label was found, apply it to the PR
             if (kindLabel) {
               github.issues.addLabels({
                 owner: context.repo.owner,
@@ -44,4 +41,4 @@ jobs:
               });
             }
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.AGONES_BOT }}
