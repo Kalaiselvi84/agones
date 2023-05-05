@@ -14,9 +14,9 @@ jobs:
         uses: actions/github-script@v5
         with:
           script: |
-            const context = JSON.stringify(github.context);
-            console.log(`::set-env name=GITHUB_CONTEXT::${context}`);
-            
+            const githubContext = JSON.stringify(github.context);
+            console.log(`::set-env name=GITHUB_CONTEXT::${githubContext}`);
+
       - name: Apply kind label to PR
         uses: actions/github-script@v5
         with:
