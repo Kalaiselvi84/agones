@@ -14,9 +14,9 @@ jobs:
         uses: actions/github-script@v5
         with:
           script: |
-            const { context, github } = require('@actions/github');
+            const { context: prContext, github } = require('@actions/github');
 
-            const prLabels = context.payload.pull_request.labels.map(label => label.name);
+            const prLabels = prContext.payload.pull_request.labels.map(label => label.name);
             let kindLabel;
             if (prLabels.includes('/kind breaking')) {
               kindLabel = 'kind/breaking';
@@ -34,9 +34,9 @@ jobs:
 
             if (kindLabel) {
               github.issues.addLabels({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                issue_number: context.payload.pull_request.number,
+                owner: prContext.repo.owner,
+                repo: prContext.repo.repo,
+                issue_number: prContext.payload.pull_request.number,
                 labels: [kindLabel]
               });
             }
