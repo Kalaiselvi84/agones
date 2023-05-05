@@ -10,11 +10,6 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      # Use auto-label action with additional labels based on /kind label
-      - uses: Renato66/auto-label@v2
-        with:
-          repo-token: ${{ secrets.AGONES_BOT }}
-      
       # Extract /kind label and map to associated label
       - name: Apply kind label to PR
         uses: actions/github-script@v5
