@@ -5,14 +5,27 @@ on:
     types:
       - opened
       - reopened
+
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      # Use auto-label action with additional labels based on /kind label
       - uses: Renato66/auto-label@v2
         with:
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
-          ignore-comments: true
-          labels-synonyms: '{"bug":["error","need fix","not working"],"enhancement":["upgrade"],"question":["help"]}'
-          labels-not-allowed: '["good first issue"]'
-          default-labels: '["help wanted"]'
+          repo-token: ${{ secrets.AGONES_BOT }}
+      
+      # Extract /kind label and map to associated label
+      - name: Map /kind label to associated label
+        id: kind-label
+        run: |
+          LABEL=$(jq -r '.pull_request.labels[] | select(.name | startswith("/kind ")) | .name' $GITHUB_EVENT_PATH)
+          case $LABEL in
+            "/kind breaking") echo "::set-output name=label::kind/breaking";;
+            "/kind bug") echo "::set-output name=label::kind/bug";;
+            "/kind cleanup") echo "::set-output name=label::kind/cleanup";;
+            "/kind documentation") echo "::set-output name=label::kind/documentation";;
+            "/kind feature") echo "::set-output name=label::kind/feature";;
+            "/kind hotfix") echo "::set-output name=label::kind/hotfix";;
+            *) echo "::set-output name=label::none";;
+          esac
