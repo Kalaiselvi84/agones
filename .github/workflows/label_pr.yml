@@ -1,0 +1,43 @@
+name: Label Pull Requests
+
+on:
+  pull_request:
+    types:
+      - opened
+      - reopened
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Apply kind label to PR
+        uses: actions/github-script@v5
+        with:
+          script: |
+            const githubContext = JSON.parse(process.env.GITHUB_CONTEXT);
+            const prLabels = githubContext.payload.pull_request.labels.map(label => label.name);
+            let kindLabel;
+            if (prLabels.includes('/kind breaking')) {
+              kindLabel = 'kind/breaking';
+            } else if (prLabels.includes('/kind bug')) {
+              kindLabel = 'kind/bug';
+            } else if (prLabels.includes('/kind cleanup')) {
+              kindLabel = 'kind/cleanup';
+            } else if (prLabels.includes('/kind documentation')) {
+              kindLabel = 'kind/documentation';
+            } else if (prLabels.includes('/kind feature')) {
+              kindLabel = 'kind/feature';
+            } else if (prLabels.includes('/kind hotfix')) {
+              kindLabel = 'kind/hotfix';
+            }
+
+            if (kindLabel) {
+              github.issues.addLabels({
+                owner: githubContext.repo.owner,
+                repo: githubContext.repo.repo,
+                issue_number: githubContext.payload.pull_request.number,
+                labels: [kindLabel]
+              });
+            }
+        env:
+          GITHUB_TOKEN: ${{ secrets.AGONES_BOT }}
