@@ -10,12 +10,13 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Debug GITHUB_CONTEXT
-        run: echo $GITHUB_CONTEXT
-     
-      - name: Debug payload
-        run: echo '${{ toJson(github.event) }}'
-  
+      - name: Set GitHub context
+        uses: actions/github-script@v5
+        with:
+          script: |
+            const context = JSON.stringify(github.context);
+            console.log(`::set-env name=GITHUB_CONTEXT::${context}`);
+            
       - name: Apply kind label to PR
         uses: actions/github-script@v5
         with:
