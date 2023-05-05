@@ -16,7 +16,7 @@ jobs:
 
       - name: Check for kind
         run: |
-          if [[ $body =~ /kind (breaking|feature|bug|cleanup|documentation|hotfix)/ ]]; then
+          if [[ $body =~ '/kind (breaking|feature|bug|cleanup|documentation|hotfix)/' ]]; then
             echo "Found kind: $BASH_REMATCH[1]"
             # Label the PR
             github api post /repos/$GITHUB_REPOSITORY/issues/$GITHUB_PR_ID/labels \
