@@ -1,0 +1,26 @@
+name: Label PRs based on kind
+on:
+  pull_request:
+    types:
+      - opened
+      - reopened
+
+jobs:
+  label-prs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Get PR body
+        run: |
+          body=$(cat $GITHUB_EVENT_PATH)
+
+      - name: Check for kind
+        run: |
+          if [[ $body =~ /kind (breaking|feature|bug|cleanup|documentation|hotfix)/ ]]; then
+            echo "Found kind: $BASH_REMATCH[1]"
+            # Label the PR
+            github api post /repos/$GITHUB_REPOSITORY/issues/$GITHUB_PR_ID/labels \
+              -f name=$BASH_REMATCH[1]
+          else
+            echo "No kind found"
+          fi
