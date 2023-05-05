@@ -14,7 +14,7 @@ jobs:
         uses: actions/github-script@v5
         with:
           script: |
-            const { context: prContext, github } = require('@actions/github');
+            const { context: prContext, github: prGitHub } = require('@actions/github');
 
             const prLabels = prContext.payload.pull_request.labels.map(label => label.name);
             let kindLabel;
@@ -33,7 +33,7 @@ jobs:
             }
 
             if (kindLabel) {
-              github.issues.addLabels({
+              prGitHub.issues.addLabels({
                 owner: prContext.repo.owner,
                 repo: prContext.repo.repo,
                 issue_number: prContext.payload.pull_request.number,
