@@ -24,7 +24,7 @@ jobs:
       - name: Check for kind
         run: |
           # Check if the body contains the `/kind` keyword
-          if [[ $body =~ '\/kind (breaking|feature|bug|cleanup|documentation|hotfix)' ]]; then
+          if [[ $body =~ '\/kind \b(breaking|feature|bug|cleanup|documentation|hotfix)\b' ]]; then
             # Get the kind of the PR
             kind=${BASH_REMATCH[1]}
 
