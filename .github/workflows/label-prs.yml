@@ -1,38 +1,28 @@
-name: Label PRs
+name: Label PR based on body keyword
 
 on:
   pull_request:
     types: [opened, edited, reopened]
 
 jobs:
-  label-pr:
+  label:
     runs-on: ubuntu-latest
     steps:
-      - name: Label PR based on body
-        uses: actions/github-script@0.6.0
-        env:
-          KEYWORD_1: "/kind breaking"
-          LABEL_1: "kind/breaking"
-          KEYWORD_2: "/kind bug"
-          LABEL_2: "kind/bug"
-          KEYWORD_3: "/kind cleanup"
-          LABEL_3: "kind/cleanup"
-          KEYWORD_4: "/kind documentation"
-          LABEL_4: "kind/documentation"
-          KEYWORD_5: "/kind feature"
-          LABEL_5: "kind/feature"
-          KEYWORD_6: "/kind hotfix"
-          LABEL_6: "kind/hotfix"
+      - name: Checkout code
+        uses: actions/checkout@v2
+      
+      - name: Label PR
+        uses: actions/github-script@v4
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const keywords = [
-              { keyword: process.env.KEYWORD_1, label: process.env.LABEL_1 },
-              { keyword: process.env.KEYWORD_2, label: process.env.LABEL_2 },
-              { keyword: process.env.KEYWORD_3, label: process.env.LABEL_3 },
-              { keyword: process.env.KEYWORD_4, label: process.env.LABEL_4 },
-              { keyword: process.env.KEYWORD_5, label: process.env.LABEL_5 },
-              { keyword: process.env.KEYWORD_6, label: process.env.LABEL_6 }
+              { keyword: "/kind breaking", label: "kind/breaking" },
+              { keyword: "/kind bug", label: "kind/bug" },
+              { keyword: "/kind cleanup", label: "kind/cleanup" },
+              { keyword: "/kind documentation", label: "kind/documentation" },
+              { keyword: "/kind feature", label: "kind/feature" },
+              { keyword: "/kind hotfix", label: "kind/hotfix" }
             ];
             const prBody = context.payload.pull_request.body.toLowerCase();
             for (const keywordData of keywords) {
