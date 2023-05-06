@@ -1,0 +1,34 @@
+name: Label PRs based on kind
+on:
+  pull_request:
+    types:
+      - opened
+      - reopened
+
+jobs:
+  label-prs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Get PR body
+        run: |
+          body=$(curl -s -H "Authorization: Bearer ${{ secrets.AGONES_BOT }}" \
+            "https://api.github.com/repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}" | jq -r '.body')
+
+      - name: Check for kind
+        run: |
+          # Check if the body contains the `/kind` keyword
+          if [[ $body =~ '\/kind (breaking|feature|bug|cleanup|documentation|hotfix)' ]]; then
+            # Get the kind of the PR
+            kind=${BASH_REMATCH[1]}
+
+            # Label the PR
+            curl -X POST -H "Authorization: Bearer ${{ secrets.AGONES_BOT }}" \
+              -H "Accept: application/vnd.github.v3+json" \
+              "https://api.github.com/repos/${{ github.repository }}/issues/${{ github.event.pull_request.number }}/labels" \
+              -d "{\"labels\":[\"$kind\"]}"
+          else
+            # No kind found
+            echo "No kind found"
+          fi
