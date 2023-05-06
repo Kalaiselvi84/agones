@@ -27,7 +27,7 @@ jobs:
           body=$(echo "$body" | awk '{$1=$1};1')
 
           # Check if the body contains the `/kind` keyword
-          if [[ $body == *"/kind "* ]]; then
+          if [[ $body =~ '/kind ' ]]; then
             # Extract the kind from the body
             kind=$(grep -oP '/kind \K\w+' <<< "$body")
             echo "kind: $kind"
