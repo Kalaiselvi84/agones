@@ -30,6 +30,7 @@ jobs:
           if [[ $body == *"/kind "* ]]; then
             # Extract the kind from the body
             kind=$(grep -oP '/kind \K\w+' <<< "$body")
+            echo "kind: $kind"
         
             # Label the PR
             curl -X POST -H "Authorization: Bearer ${{ secrets.AGONES_BOT }}" \
