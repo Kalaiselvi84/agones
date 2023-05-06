@@ -2,7 +2,7 @@ name: Label PRs
 
 on:
   pull_request:
-    types: [opened, reopened]
+    types: [opened, edited, reopened]
 
 jobs:
   label-pr:
@@ -11,19 +11,38 @@ jobs:
       - name: Label PR based on body
         uses: actions/github-script@0.6.0
         env:
-          KEYWORD_1: "bug"
-          KEYWORD_2: "feature"
+          KEYWORD_1: "/kind breaking"
+          LABEL_1: "kind/breaking"
+          KEYWORD_2: "/kind bug"
+          LABEL_2: "kind/bug"
+          KEYWORD_3: "/kind cleanup"
+          LABEL_3: "kind/cleanup"
+          KEYWORD_4: "/kind documentation"
+          LABEL_4: "kind/documentation"
+          KEYWORD_5: "/kind feature"
+          LABEL_5: "kind/feature"
+          KEYWORD_6: "/kind hotfix"
+          LABEL_6: "kind/hotfix"
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const keywords = [process.env.KEYWORD_1, process.env.KEYWORD_2];
+            const keywords = [
+              { keyword: process.env.KEYWORD_1, label: process.env.LABEL_1 },
+              { keyword: process.env.KEYWORD_2, label: process.env.LABEL_2 },
+              { keyword: process.env.KEYWORD_3, label: process.env.LABEL_3 },
+              { keyword: process.env.KEYWORD_4, label: process.env.LABEL_4 },
+              { keyword: process.env.KEYWORD_5, label: process.env.LABEL_5 },
+              { keyword: process.env.KEYWORD_6, label: process.env.LABEL_6 }
+            ];
             const prBody = context.payload.pull_request.body.toLowerCase();
-            const labelsToAdd = keywords.filter(keyword => prBody.includes(keyword)).map(keyword => `label:${keyword}`);
-            if (labelsToAdd.length > 0) {
-              github.issues.addLabels({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                issue_number: context.payload.pull_request.number,
-                labels: labelsToAdd
-              });
+            for (const keywordData of keywords) {
+              if (prBody.includes(keywordData.keyword.toLowerCase())) {
+                github.issues.addLabels({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: context.payload.pull_request.number,
+                  labels: [`label:${keywordData.label}`]
+                });
+                break;
+              }
             }
