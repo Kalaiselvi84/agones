@@ -14,7 +14,7 @@ jobs:
           KEYWORD_1: "bug"
           KEYWORD_2: "feature"
         with:
-          github-token: ${{ secrets.AGONES_BOT }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const keywords = [process.env.KEYWORD_1, process.env.KEYWORD_2];
             const prBody = context.payload.pull_request.body.toLowerCase();
