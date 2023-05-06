@@ -18,6 +18,8 @@ jobs:
           if [[ -z $body ]]; then
             echo "Failed to retrieve PR body"
             exit 1
+          else
+            echo "PR body: $body"
           fi
       - name: Check for kind
         run: |
