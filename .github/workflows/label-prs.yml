@@ -35,12 +35,14 @@ jobs:
               { keyword: process.env.KEYWORD_6, label: process.env.LABEL_6 }
             ];
             const prBody = context.payload.pull_request.body.toLowerCase();
-            const labelsToAdd = keywords.filter(keywordData => prBody.includes(keywordData.keyword.toLowerCase())).map(keywordData => `label:${keywordData.label}`);
-            if (labelsToAdd.length > 0) {
-              github.issues.addLabels({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                issue_number: context.payload.pull_request.number,
-                labels: labelsToAdd
-              });
+            for (const keywordData of keywords) {
+              if (prBody.includes(keywordData.keyword.toLowerCase())) {
+                github.issues.addLabels({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: context.payload.pull_request.number,
+                  labels: [`label:${keywordData.label}`]
+                });
+                break;
+              }
             }
