@@ -23,11 +23,14 @@ jobs:
           fi
       - name: Check for kind
         run: |
-          # Check if the body contains the `/kind` keyword
-          if [[ $body =~ '/kind (breaking|feature|bug|cleanup|documentation|hotfix)' ]]; then
-            # Get the kind of the PR
-            kind=${BASH_REMATCH[1]}
+          # Remove leading and trailing whitespace from the body
+          body=$(echo "$body" | awk '{$1=$1};1')
 
+          # Check if the body contains the `/kind` keyword
+          if [[ $body == *"/kind "* ]]; then
+            # Extract the kind from the body
+            kind=$(grep -oP '/kind \K\w+' <<< "$body")
+        
             # Label the PR
             curl -X POST -H "Authorization: Bearer ${{ secrets.AGONES_BOT }}" \
               -H "Accept: application/vnd.github.v3+json" \
@@ -38,3 +41,4 @@ jobs:
             echo "No kind found"
             echo "PR body: $body"
           fi
+
