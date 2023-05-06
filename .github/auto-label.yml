@@ -1,7 +1,0 @@
-pull_request_labels:
-  - pattern: "/kind feature"
-    labels: ["kind/feature"]
-  - pattern: "/kind breaking"
-    labels: ["kind/breaking"]
-  - pattern: "/kind bug"
-    labels: ["/kind bug"]
