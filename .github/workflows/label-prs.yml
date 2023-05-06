@@ -29,7 +29,7 @@ jobs:
           # Check if the body contains the `/kind` keyword
           if [[ $body =~ '/kind ' ]]; then
             # Extract the kind from the body
-            kind=$(grep -oP '/kind \K\w+' <<< "$body")
+            kind=$(echo "$body" | sed -n 's/.*\/kind \([^ ]*\).*/\1/p')
             echo "kind: $kind"
         
             # Label the PR
