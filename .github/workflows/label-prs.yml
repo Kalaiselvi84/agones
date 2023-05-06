@@ -15,7 +15,10 @@ jobs:
         run: |
           body=$(curl -s -H "Authorization: Bearer ${{ secrets.AGONES_BOT }}" \
             "https://api.github.com/repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}" | jq -r '.body')
-
+          if [[ -z $body ]]; then
+            echo "Failed to retrieve PR body"
+            exit 1
+          fi
       - name: Check for kind
         run: |
           # Check if the body contains the `/kind` keyword
