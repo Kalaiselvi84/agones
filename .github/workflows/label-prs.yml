@@ -10,23 +10,26 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - name: Install jq
+        run: sudo apt-get update && sudo apt-get install -y jq
+
       - name: Get PR body
         run: |
-          body=$(cat $GITHUB_EVENT_PATH)
+          body=$(curl -s -H "Authorization: Bearer ${{ secrets.AGONES_BOT }}" \
+            "https://api.github.com/repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}" | jq -r '.body')
 
       - name: Check for kind
         run: |
-          # Get the body of the PR
-          body=$(github api get /repos/$GITHUB_REPOSITORY/issues/${{ github.event.pull_request.number }} | jq -r .body)
-
           # Check if the body contains the `/kind` keyword
           if [[ $body =~ '/kind (breaking|feature|bug|cleanup|documentation|hotfix)/' ]]; then
             # Get the kind of the PR
             kind=${BASH_REMATCH[1]}
 
             # Label the PR
-            github api post /repos/$GITHUB_REPOSITORY/issues/$GITHUB_PR_ID/labels \
-              -f name=$kind
+            curl -X POST -H "Authorization: Bearer ${{ secrets.AGONES_BOT }}" \
+              -H "Accept: application/vnd.github.v3+json" \
+              "https://api.github.com/repos/${{ github.repository }}/issues/${{ github.event.pull_request.number }}/labels" \
+              -d "{\"labels\":[\"$kind\"]}"
           else
             # No kind found
             echo "No kind found"
