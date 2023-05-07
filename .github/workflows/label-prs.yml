@@ -14,12 +14,12 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const keywords = {
-              "breaking": /kind\s+breaking\b+/,
-              "bug": /kind\s+bug\b+/,
-              "feature": /kind\s+feature\b+/,
-              "cleanup": /kind\s+cleanup\b+/,
-              "documentation": /kind\s+documentation\b+/,
-              "hotfix": /kind\s+hotfix\b+/,
+              "breaking": /kind\s+breaking\b/,
+              "bug": /kind\s+bug\b/,
+              "feature": /kind\s+feature\b/,
+              "cleanup": /kind\s+cleanup\b/,
+              "documentation": /kind\s+documentation\b/,
+              "hotfix": /kind\s+hotfix\b/,
             };
             const prBody = context.payload.pull_request.body.toLowerCase().trim();
             (async () => {
