@@ -16,6 +16,7 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
+            const context = github.context;
             const keywords = [
               { keyword: "/kind breaking", label: "kind/breaking" },
               { keyword: "/kind bug", label: "kind/bug" },
