@@ -42,8 +42,9 @@ jobs:
 
             if (prLabels.length === 0) {
               for (const [keyword, label] of Object.entries(keywords)) {
-                if (prBody.includes(keyword)) {
-                  console.log(`Adding label from 2nd if - '${label}' based on keyword '${keyword}'`);
+                const keywordRegex = new RegExp(`\\b${keyword}\\b`, "i");
+                if (prBody.match(keywordRegex)) {
+                  console.log(`Adding label 2nd id - '${label}' based on keyword '${keyword}'`);
                   prLabels.push(label);
                   break;
                 }
