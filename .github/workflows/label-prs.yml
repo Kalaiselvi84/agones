@@ -24,13 +24,13 @@ jobs:
               { keyword: "/kind feature", label: "kind/feature" },
               { keyword: "/kind hotfix", label: "kind/hotfix" }
             ];
-            const prBody = context.payload.pull_request.body.toLowerCase();
+            const prBody = github.context.payload.pull_request.body.toLowerCase();
             for (const keywordData of keywords) {
               if (prBody.includes(keywordData.keyword.toLowerCase())) {
                 await github.issues.addLabels({
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  issue_number: context.payload.pull_request.number,
+                  owner: github.context.repo.owner,
+                  repo: github.context.repo.repo,
+                  issue_number: github.context.payload.pull_request.number,
                   labels: [keywordData.label]
                 });
                 break;
