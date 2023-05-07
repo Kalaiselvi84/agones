@@ -17,12 +17,12 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const keywords = [
-              { keyword: "/kind breaking", label: "kind/breaking" },
-              { keyword: "/kind bug", label: "kind/bug" },
-              { keyword: "/kind cleanup", label: "kind/cleanup" },
-              { keyword: "/kind documentation", label: "kind/documentation" },
-              { keyword: "/kind feature", label: "kind/feature" },
-              { keyword: "/kind hotfix", label: "kind/hotfix" }
+              { keyword: "breaking", label: "kind/breaking" },
+              { keyword: "bug", label: "kind/bug" },
+              { keyword: "cleanup", label: "kind/cleanup" },
+              { keyword: "documentation", label: "kind/documentation" },
+              { keyword: "feature", label: "kind/feature" },
+              { keyword: "hotfix", label: "kind/hotfix" }
             ];
             const prBody = context.payload.pull_request.body.toLowerCase();
             for (const keywordData of keywords) {
@@ -33,6 +33,5 @@ jobs:
                   issue_number: context.payload.pull_request.number,
                   labels: [keywordData.label]
                 });
-                break;
               }
             }
