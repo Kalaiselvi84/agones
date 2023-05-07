@@ -2,7 +2,7 @@ name: Label PR based on body keyword
 
 on:
   pull_request:
-    types: [opened, edited, reopened]
+    types: [opened, reopened]
 
 jobs:
   label:
@@ -17,22 +17,38 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const keywords = [
-              { keyword: "/kind breaking", label: "kind/breaking" },
-              { keyword: "/kind bug", label: "kind/bug" },
-              { keyword: "/kind cleanup", label: "kind/cleanup" },
-              { keyword: "/kind documentation", label: "kind/documentation" },
-              { keyword: "/kind feature", label: "kind/feature" },
-              { keyword: "/kind hotfix", label: "kind/hotfix" }
+              { keyword: "breaking", label: "kind/breaking" },
+              { keyword: "bug", label: "kind/bug" },
+              { keyword: "cleanup", label: "kind/cleanup" },
+              { keyword: "documentation", label: "kind/documentation" },
+              { keyword: "feature", label: "kind/feature" },
+              { keyword: "hotfix", label: "kind/hotfix" }
             ];
             const prBody = context.payload.pull_request.body.toLowerCase();
+            let matchedLabel = null;
             for (const keywordData of keywords) {
               if (prBody.includes(keywordData.keyword.toLowerCase())) {
-                await github.issues.addLabels({
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  issue_number: context.payload.pull_request.number,
-                  labels: [keywordData.label]
-                });
+                matchedLabel = keywordData.label;
                 break;
               }
+            }
+            if (matchedLabel) {
+              const labelsToAdd = [matchedLabel];
+              const labelsToRemove = keywords
+                .filter(keywordData => keywordData.label !== matchedLabel)
+                .map(keywordData => keywordData.label);
+              await github.issues.addLabels({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.payload.pull_request.number,
+                labels: labelsToAdd
+              });
+              await github.issues.removeLabels({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.payload.pull_request.number,
+                labels: labelsToRemove
+              });
+            } else {
+              console.log("No matching keyword found in the PR body.");
             }
