@@ -14,23 +14,25 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const keywords = {
-              "breaking": "kind/breaking",
-              "bug": "kind/bug",
-              "feature": "kind/feature",
-              "cleanup": "kind/cleanup",
-              "documentation": "kind/documentation",
-              "hotfix": "kind/hotfix"
+              "breaking": /kind\s+breaking\b/,
+              "bug": /kind\s+bug\b/,
+              "feature": /kind\s+feature\b/,
+              "cleanup": /kind\s+cleanup\b/,
+              "documentation": /kind\s+documentation\b/,
+              "hotfix": /kind\s+hotfix\b/,
             };
-            const prBody = context.payload.pull_request.body.toLowerCase();
-            for (const [keyword, label] of Object.entries(keywords)) {
-              if (prBody.includes(keyword)) {
-                console.log(`Adding label '${label}' based on keyword '${keyword}'`);
-                await github.issues.addLabels({
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  issue_number: context.payload.pull_request.number,
-                  labels: [label]
-                });
-                break; // Exit loop once a keyword is found
+            const prBody = context.payload.pull_request.body.toLowerCase().trim();
+            (async () => {
+              for (const [keyword, regex] of Object.entries(keywords)) {
+                if (regex.test(prBody)) {
+                  console.log(`Matched label '${keyword}' with pattern ${regex}`);
+                  await github.issues.addLabels({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    issue_number: context.payload.pull_request.number,
+                    labels: [keyword]
+                  });
+                  break;
+                }
               }
-            }
+            })();
