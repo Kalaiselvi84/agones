@@ -33,9 +33,9 @@ jobs:
             const regex = /\/kind\s(\w+)/;
             const match = prBody.match(regex);
 
-            if (match && match[1] && match[1] in keywords) {
+            if (match && match[1]) {
               const keyword = match[1];
-              const label = keywords[keyword];
+              const label = keywords[keyword] || "kind/other";
               console.log(`Adding label '${label}' based on keyword '${keyword}'`);
               prLabels.push(label);
             }
