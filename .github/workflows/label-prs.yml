@@ -25,14 +25,18 @@ jobs:
               { keyword: "/kind hotfix", label: "kind/hotfix" }
             ];
             const prBody = github.context.payload.pull_request.body.toLowerCase();
-            for (const keywordData of keywords) {
-              if (prBody.includes(keywordData.keyword.toLowerCase())) {
-                await github.issues.addLabels({
-                  owner: github.context.repo.owner,
-                  repo: github.context.repo.repo,
-                  issue_number: github.context.payload.pull_request.number,
-                  labels: [keywordData.label]
-                });
-                break;
+            if (github.context.payload && github.context.payload.pull_request && github.context.payload.pull_request.body) {
+              for (const keywordData of keywords) {
+                if (prBody.includes(keywordData.keyword.toLowerCase())) {
+                  await github.issues.addLabels({
+                    owner: github.context.repo.owner,
+                    repo: github.context.repo.repo,
+                    issue_number: github.context.payload.pull_request.number,
+                    labels: [keywordData.label]
+                  });
+                  break;
+                }
               }
+            } else {
+              console.log('No pull_request found in payload');
             }
