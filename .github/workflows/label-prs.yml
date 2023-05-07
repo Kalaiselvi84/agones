@@ -22,15 +22,17 @@ jobs:
               "hotfix": "kind/hotfix"
             };
             const prBody = context.payload.pull_request.body.toLowerCase();
-            for (const [keyword, label] of Object.entries(keywords)) {
-              if (prBody.includes(keyword)) {
-                console.log(`Adding label '${label}' based on keyword '${keyword}'`);
-                await github.issues.addLabels({
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  issue_number: context.payload.pull_request.number,
-                  labels: [label]
-                });
-                break; // Exit loop once a keyword is found
+            (async () => {
+              for (const [keyword, label] of Object.entries(keywords)) {
+                if (prBody.includes(keyword)) {
+                  console.log(`Adding label '${label}' based on keyword '${keyword}'`);
+                  await github.issues.addLabels({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    issue_number: context.payload.pull_request.number,
+                    labels: [label]
+                  });
+                  break; // Exit loop once a keyword is found
+                }
               }
-            }
+            })();
