@@ -1,38 +1,50 @@
 name: Label PR based on body keyword
+
 on:
   pull_request:
     types: [opened, reopened]
+
 jobs:
   label:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+
       - name: Label PR
         uses: actions/github-script@v4
         with:
+          async: yes
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const keywords = {
-              "breaking": /kind\s+breaking\b/,
-              "bug": /kind\s+bug\b/,
-              "feature": /kind\s+feature\b/,
-              "cleanup": /kind\s+cleanup\b/,
-              "documentation": /kind\s+documentation\b/,
-              "hotfix": /kind\s+hotfix\b/,
+              "breaking": "kind/breaking",
+              "bug": "kind/bug",
+              "feature": "kind/feature",
+              "cleanup": "kind/cleanup",
+              "documentation": "kind/documentation",
+              "hotfix": "kind/hotfix"
             };
-            const prBody = context.payload.pull_request.body.toLowerCase().trim();
-            (async () => {
-              for (const [keyword, regex] of Object.entries(keywords)) {
-                if (regex.test(prBody)) {
-                  console.log(`Matched label '${keyword}' with pattern ${regex}`);
-                  await github.issues.addLabels({
-                    owner: context.repo.owner,
-                    repo: context.repo.repo,
-                    issue_number: context.payload.pull_request.number,
-                    labels: [keyword]
-                  });
-                  break;
-                }
-              }
-            })();
+
+            const prBody = context.payload.pull_request.body.toLowerCase();
+            const prLabels = [];
+
+            const regex = /\/kind\s(\w+)/;
+            const match = prBody.match(regex);
+
+            if (match && match[1] && match[1] in keywords) {
+              const keyword = match[1];
+              const label = keywords[keyword];
+              console.log(`Adding label '${label}' based on keyword '${keyword}'`);
+              prLabels.push(label);
+            }
+
+            if (prLabels.length > 0) {
+              await github.issues.addLabels({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.payload.pull_request.number,
+                labels: prLabels
+              });
+            }
