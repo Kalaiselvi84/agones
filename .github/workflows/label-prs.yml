@@ -21,16 +21,20 @@ jobs:
               "documentation": "kind/documentation",
               "hotfix": "kind/hotfix"
             };
-            const prBody = context.payload.pull_request.body.toLowerCase();
+            const prBodyLines = context.payload.pull_request.body.toLowerCase().split('\n');
+            const prLabels = [];
             for (const [keyword, label] of Object.entries(keywords)) {
-              if (prBody.includes(keyword)) {
+              if (prBodyLines.some(line => line.includes(`/kind ${keyword}`))) {
                 console.log(`Adding label '${label}' based on keyword '${keyword}'`);
-                await github.issues.addLabels({
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  issue_number: context.payload.pull_request.number,
-                  labels: [label]
-                });
-                break; // Exit loop once a keyword is found
+                prLabels.push(label);
+                break; // Exit the loop once a keyword is found
               }
+            }
+            if (prLabels.length > 0) {
+              await github.issues.addLabels({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.payload.pull_request.number,
+                labels: prLabels
+              });
             }
