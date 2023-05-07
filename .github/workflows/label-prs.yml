@@ -27,17 +27,27 @@ jobs:
               "hotfix": "kind/hotfix"
             };
 
-            const prBody = context.payload.pull_request.body.toLowerCase();
-            const prLabels = [];
-
+            const prBody = context.payload.pull_request.body.toLowerCase().trim();
             const regex = /\/kind\s(\w+)/;
             const match = prBody.match(regex);
 
-            if (match && match[1]) {
+            const prLabels = [];
+
+            if (match && match[1] && match[1] in keywords) {
               const keyword = match[1];
-              const label = keywords[keyword] || "kind/other";
+              const label = keywords[keyword];
               console.log(`Adding label '${label}' based on keyword '${keyword}'`);
               prLabels.push(label);
+            }
+
+            if (prLabels.length === 0) {
+              for (const [keyword, label] of Object.entries(keywords)) {
+                if (prBody.includes(keyword)) {
+                  console.log(`Adding label '${label}' based on keyword '${keyword}'`);
+                  prLabels.push(label);
+                  break;
+                }
+              }
             }
 
             if (prLabels.length > 0) {
