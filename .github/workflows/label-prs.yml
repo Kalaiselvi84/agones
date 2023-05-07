@@ -1,13 +1,17 @@
 name: Label PR based on body keyword
+
 on:
   pull_request:
     types: [opened, reopened]
+
 jobs:
   label:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+
       - name: Label PR
         uses: actions/github-script@v4
         with:
@@ -21,16 +25,24 @@ jobs:
               "documentation": "kind/documentation",
               "hotfix": "kind/hotfix"
             };
+
             const prBody = context.payload.pull_request.body.toLowerCase();
-            for (const [keyword, label] of Object.entries(keywords)) {
-              if (prBody.includes(keyword)) {
-                console.log(`Adding label '${label}' based on keyword '${keyword}'`);
-                await github.issues.addLabels({
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  issue_number: context.payload.pull_request.number,
-                  labels: [label]
-                });
-                break; // Exit loop once a keyword is found
-              }
+            const prLabels = [];
+            const regex = /\/kind\s(\w+)/;
+            const match = prBody.match(regex);
+
+            if (match && match[1] && match[1] in keywords) {
+              const keyword = match[1];
+              const label = keywords[keyword];
+              console.log(`Adding label '${label}' based on keyword '${keyword}'`);
+              prLabels.push(label);
+            }
+
+            if (prLabels.length > 0) {
+              await github.issues.addLabels({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.payload.pull_request.number,
+                labels: prLabels
+              });
             }
