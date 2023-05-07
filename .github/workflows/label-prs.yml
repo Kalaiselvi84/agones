@@ -36,24 +36,24 @@ jobs:
             if (match && match[1] && match[1] in keywords) {
               const keyword = match[1];
               const label = keywords[keyword];
-              console.log(`Adding label from 1st if -'${label}' based on keyword '${keyword}'`);
+              console.log(`Adding label from 1st if: '${label}' based on keyword '${keyword}'`);
               prLabels.push(label);
             }
 
             if (prLabels.length === 0) {
-              for (const [keyword, label] of Object.entries(keywords)) {
-                if (prBody.includes(keyword)) {
-                  console.log(`Adding label from 2nd if - '${label}' based on keyword '${keyword}'`);
-                  prLabels.push(label);
-                  break;
-                }
+              const keywordMatches = Object.entries(keywords)
+                .filter(([keyword, _]) => prBody.includes(keyword))
+                .map(([_, label]) => label);
+
+              if (keywordMatches.length > 0) {
+                console.log(`Adding labels based on keywords from 2nd if: ${keywordMatches.join(", ")}`);
+                prLabels.push(...keywordMatches);
               }
             }
 
-            // Add kind/other label if no matching keyword found
             if (prLabels.length === 0) {
               const otherLabel = "kind/other";
-              console.log(`Adding label from 3rd if - '${otherLabel}' as no matching keyword found`);
+              console.log(`Adding label from 3rd if: '${otherLabel}' as no matching keyword found.`);
               prLabels.push(otherLabel);
             }
 
