@@ -32,7 +32,7 @@ jobs:
             const prLabels = [];
 
             if (prLabels.length === 0) {
-              const regex = /^\/kind\s(.+)$im/;
+              const regex = /^\/kind\s(.+)$/m;
               const match = prBody.match(regex);
               console.log(`PR body: '${prBody}'`);
               console.log(`Regex match: '${match}'`);
