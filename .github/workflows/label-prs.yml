@@ -30,6 +30,9 @@ jobs:
             const prBody = context.payload.pull_request.body.toLowerCase().trim();
             const regex = /^\/kind\s(.+)$/m;
             const match = prBody.match(regex);
+            console.log(`PR body: '${prBody}'`);
+            console.log(`Regex match: '${match}'`);
+
 
             const prLabels = [];
 
@@ -39,22 +42,21 @@ jobs:
               console.log(`Adding label from 1st if: '${label}' based on keyword '${keyword}'`);
               prLabels.push(label);
             }
+            else {
+              console.log(`No match in 1st if statement`);
+            }
 
             if (prLabels.length === 0) {
               const keywordMatches = Object.entries(keywords)
-                .filter(([keyword, _]) => {
-                  const keywordRegex = new RegExp(`\\b${keyword}\\b`, 'i');
-                  return keywordRegex.test(prBody);
-                })
+                .filter(([keyword, _]) => prBody.includes(keyword) && prBody.split(' ').includes(keyword))
                 .map(([_, label]) => label);
 
               if (keywordMatches.length > 0) {
-                console.log(`Adding labels based on keywords from 2nd if: ${keywordMatches.join(", ")}`);
-                prLabels.push(...keywordMatches);
+                console.log(`Adding label from 2nd if: '${keywordMatches[0]}' based on keyword '${keywordMatches[0].split('/')[1]}'`);
+                prLabels.push(keywordMatches[0]);
               } else {
-                const otherLabel = "kind/other";
-                console.log(`Adding label from else : '${otherLabel}' as no matching keyword found.`);
-                prLabels.push(otherLabel);
+                console.log(`Adding label from else : 'kind/other' as no matching keyword found.`);
+                prLabels.push("kind/other");
               }
             }
 
