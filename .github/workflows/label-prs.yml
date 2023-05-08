@@ -30,48 +30,6 @@ jobs:
             const prBody = context.payload.pull_request.body.toLowerCase().trim();
             const regex = /^\/kind\s(.+)$/m;
             const match = prBody.match(regex);
-
-            const prLabels = [];
-
-            if (match && match[1] && match[1] in keywords) {
-              const keyword = match[1];
-              const label = keywords[keyword];
-              console.log(`Adding label from 1st if: '${label}' based on keyword '${keyword}'`);
-              prLabels.push(label);
-            }
-
-            name: Label PR based on body keyword
-
-on:
-  pull_request:
-    types: [opened, reopened]
-
-jobs:
-  label:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Label PR
-        uses: actions/github-script@v4
-        with:
-          async: yes
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            const keywords = {
-              "breaking": "kind/breaking",
-              "bug": "kind/bug",
-              "feature": "kind/feature",
-              "cleanup": "kind/cleanup",
-              "documentation": "kind/documentation",
-              "hotfix": "kind/hotfix"
-            };
-
-            const prBody = context.payload.pull_request.body.toLowerCase().trim();
-            const regex = /^\/kind\s(.+)$/m;
-            const match = prBody.match(regex);
             console.log(`PR body: '${prBody}'`);
             console.log(`Regex match: '${match}'`);
 
