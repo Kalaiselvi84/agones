@@ -41,22 +41,18 @@ jobs:
             }
 
             if (prLabels.length === 0) {
-              const keywordMatches = Object.entries(keywords)
-                .filter(([keyword, _]) => {
-                  const keywordRegex = new RegExp(`\\b${keyword}\\b`, 'i');
-                  return keywordRegex.test(prBody);
-                })
-                .map(([_, label]) => label);
-
-              if (keywordMatches.length > 0) {
-                console.log(`Adding labels based on keywords from 2nd if: ${keywordMatches.join(", ")}`);
-                prLabels.push(...keywordMatches);
-              } else {
+              for (const [keyword, label] of Object.entries(keywords)) {
+                if (prBody.includes(keyword)) {
+                  console.log(`Adding label from 2nd if: '${label}' based on keyword '${keyword}'`);
+                  prLabels.push(label);
+                  break;
+                }
+              }
+            } else {
                 const otherLabel = "kind/other";
                 console.log(`Adding label from else : '${otherLabel}' as no matching keyword found.`);
                 prLabels.push(otherLabel);
               }
-            }
 
             await github.issues.addLabels({
               owner: context.repo.owner,
