@@ -32,7 +32,7 @@ jobs:
             const prLabels = [];
 
             if (prLabels.length === 0) {
-              const regex = /\/kind\s(\w+)/i;
+              const regex = /^\/kind\s(.+)$/m;
               const match = prBody.match(regex);
               console.log(`PR body: '${prBody}'`);
               console.log(`Regex match: '${match}'`);
@@ -43,22 +43,10 @@ jobs:
                 console.log(`Adding label: '${label}' based on keyword '${keyword}'`);
                 prLabels.push(label);
               } else {
-                const keywordMatches = Object.entries(keywords)
-                  .filter(([keyword, _]) => {
-                    const wordRegex = new RegExp(`\\b${keyword}\\b`, 'i');
-                    return prBody.match(keyword) || prBody === keyword;
-                  })
-                  .map(([_, label]) => label);
-
-                if (keywordMatches.length > 0) {
-                  console.log(`Adding label: '${keywordMatches[0]}' based on keyword '${keywordMatches[0].split('/')[1]}'`);
-                  prLabels.push(keywordMatches[0]);
-                } else {
                   console.log(`Adding label: 'kind/other' as no matching keyword found.`);
                   prLabels.push("kind/other");
                 }
               }
-            }
 
             await github.issues.addLabels({
               owner: context.repo.owner,
