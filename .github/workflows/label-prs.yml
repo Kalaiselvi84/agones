@@ -48,8 +48,9 @@ jobs:
                   .map(([_, label]) => label);
 
                 if (keywordMatches.length > 0) {
+                  const firstMatch = keywordMatches[0];
                   console.log(`Adding label: '${keywordMatches[0]}' based on keyword '${keywordMatches[0].split('/')[1]}'`);
-                  prLabels.push(keywordMatches[0]);
+                  prLabels.push(firstMatch);
                 } else {
                   console.log(`Adding label: 'kind/other' as no matching keyword found.`);
                   prLabels.push("kind/other");
