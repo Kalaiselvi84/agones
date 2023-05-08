@@ -42,21 +42,18 @@ jobs:
 
             if (prLabels.length === 0) {
               const keywordMatches = Object.entries(keywords)
-                .filter(([keyword, _]) => {
-                  const keywordRegex = new RegExp(`\\b${keyword}\\b`, 'i');
-                  return keywordRegex.test(prBody);
-                })
+                .filter(([keyword, _]) => prBody.includes(keyword))
                 .map(([_, label]) => label);
 
               if (keywordMatches.length > 0) {
-                console.log(`Adding labels based on keywords from 2nd if: ${keywordMatches.join(", ")}`);
-                prLabels.push(...keywordMatches);
-              } else {
+                console.log(`Adding label from 2nd if: '${keywordMatches[0]}' based on keyword '${keywordMatches[0].split('/')[1]}'`);
+                prLabels.push(keywordMatches[0]);
+              }
+            } else {
                 const otherLabel = "kind/other";
                 console.log(`Adding label from else : '${otherLabel}' as no matching keyword found.`);
                 prLabels.push(otherLabel);
               }
-            }
 
             await github.issues.addLabels({
               owner: context.repo.owner,
