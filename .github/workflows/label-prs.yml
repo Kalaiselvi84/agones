@@ -45,8 +45,8 @@ jobs:
               } else {
                 const keywordMatches = Object.entries(keywords)
                   .filter(([keyword, _]) => {
-                    const wordRegex = new RegExp(`\\b${keyword}\\b`);
-                    return prBody.match(wordRegex) || prBody === keyword;
+                    const wordRegex = new RegExp(`\\b${keyword}\\b`, 'i');
+                    return prBody.includes(keyword) || prBody === keyword;
                   })
                   .map(([_, label]) => label);
 
