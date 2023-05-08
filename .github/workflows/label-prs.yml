@@ -27,25 +27,23 @@ jobs:
               "hotfix": "kind/hotfix"
             };
 
-
             const prBody = context.payload.pull_request.body.toLowerCase().trim();
             const prLabels = [];
 
-            if (prLabels.length === 0) {
-              const regex = /^\/kind\s(.+)$/m;
-              const match = prBody.match(regex);
-              console.log(`PR body: '${prBody}'`);
-              console.log(`Regex match: '${match}'`);
+            const regex = /^\/kind\s(.+)$/m;
+            const match = prBody.match(regex);
 
-              if (match && match[1] in keywords) {
-                const keyword = match[1];
-                const label = keywords[keyword];
-                console.log(`Adding label: '${label}' based on keyword '${keyword}'`);
-                prLabels.push(label);
-              } else {
-                  console.log(`Adding label: 'kind/other' as no matching keyword found.`);
-                  prLabels.push("kind/other");
-                }
+            console.log(`PR body: '${prBody}'`);
+            console.log(`Regex match: '${match}'`);
+
+            if (match && match[1] in keywords) {
+              const keyword = match[1];
+              const label = keywords[keyword];
+              console.log(`Adding label: '${label}' based on keyword '${keyword}'`);
+              prLabels.push(label);
+            } else {
+                console.log(`Adding label: 'kind/other' as no matching keyword found.`);
+                prLabels.push("kind/other");
               }
 
             await github.issues.addLabels({
