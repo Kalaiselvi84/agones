@@ -12,43 +12,97 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Label PR
-        uses: actions/github-script@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
         with:
-          async: yes
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            const keywords = {
-              "breaking": "kind/breaking",
-              "bug": "kind/bug",
-              "feature": "kind/feature",
-              "cleanup": "kind/cleanup",
-              "documentation": "kind/documentation",
-              "hotfix": "kind/hotfix"
-            };
+          node-version: "14"
 
-            const prBody = context.payload.pull_request.body.toLowerCase().trim();
-            const prLabels = [];
+      - name: Install dependencies
+        run: npm install @octokit/core
 
-            const regex = /^\/kind\s(.+)$/m;
-            const match = prBody.match(regex);
+      - name: Label PR
+        run: |
+          const { Octokit } = require('@octokit/core');
 
-            console.log(`PR body: '${prBody}'`);
-            console.log(`Regex match: '${match}'`);
+          const keywords = {
+            "breaking": "kind/breaking",
+            "bug": "kind/bug",
+            "feature": "kind/feature",
+            "cleanup": "kind/cleanup",
+            "documentation": "kind/documentation",
+            "hotfix": "kind/hotfix"
+          };
 
-            if (match && match[1] in keywords) {
-              const keyword = match[1];
-              const label = keywords[keyword];
-              console.log(`Adding label: '${label}' based on keyword '${keyword}'`);
-              prLabels.push(label);
-            } else {
-                console.log(`Adding label: 'kind/other' as no matching keyword found.`);
-                prLabels.push("kind/other");
-              }
+          const prBody = context.payload.pull_request.body.toLowerCase().trim();
+          const prLabels = [];
 
-            await github.issues.addLabels({
+          const regex = /^\/kind\s(.+)$/m;
+          const match = prBody.match(regex);
+
+          console.log(`PR body: '${prBody}'`);
+          console.log(`Regex match: '${match}'`);
+
+          if (match && match[1] in keywords) {
+            const keyword = match[1];
+            const label = keywords[keyword];
+            console.log(`Adding label: '${label}' based on keyword '${keyword}'`);
+            prLabels.push(label);
+          } else {
+            console.log(`Adding label: 'kind/other' as no matching keyword found.`);
+            prLabels.push("kind/other");
+          }
+
+          const octokit = new Octokit({ auth: process.env.GITHUB_TOKEN });
+
+          // Retrieve the PR's commits
+          const commitsResponse = await octokit.request(
+            'GET /repos/{owner}/{repo}/pulls/{pull_number}/commits',
+            {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.payload.pull_request.number
+            }
+          );
+          const commits = commitsResponse.data;
+
+          // Calculate the total size of the commits
+          let totalCommitSize = 0;
+          for (const commit of commits) {
+            totalCommitSize += commit.stats.total;
+          }
+
+          console.log(`Total commit size: ${totalCommitSize}`);
+
+          // Label the PR based on commit size
+          let labelsToAdd;
+          if (totalCommitSize < 9) {
+            labelsToAdd = context.issue({ labels: ['size:XS'] });
+          } else if (totalCommitSize < 49) {
+            labelsToAdd = context.issue({ labels: ['size:S'] });
+          } else if (totalCommitSize < 249) {
+            labelsToAdd = context.issue({ labels: ['size:M'] });
+          } else if (totalCommitSize < 999) {
+            labelsToAdd = context.issue({ labels: ['size:L'] });
+          } else {
+            labelsToAdd = context.issue({ labels: ['size:XL'] });
+          }
+
+          await octokit.request(
+            'POST /repos/{owner}/{repo}/issues/{issue_number}/labels',
+            {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.payload.pull_request.number,
+              labels: labelsToAdd.labels
+            }
+          );
+
+          await octokit.request(
+            'POST /repos/{owner}/{repo}/issues/{issue_number}/labels',
+            {
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: context.payload.pull_request.number,
               labels: prLabels
-            });
+            }
+          );
