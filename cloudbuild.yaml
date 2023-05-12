@@ -27,7 +27,10 @@ steps:
   id: cancelot
   entrypoint: 'bash'
   args: ['./ci/cancelot.sh', '--current_build_id', '$BUILD_ID']
-
+- name: 'gcr.io/cloud-builders/gcloud-slim:latest'
+  id: cancelot
+  entrypoint: 'bash'
+  args: ['./ci/cancelot.sh', '--current_build_id', '$BUILD_ID']
 #
 # Print Docker version
 #
