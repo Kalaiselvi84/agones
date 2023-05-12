@@ -42,13 +42,43 @@ jobs:
               console.log(`Adding label: '${label}' based on keyword '${keyword}'`);
               prLabels.push(label);
             } else {
-                console.log(`Adding label: 'kind/other' as no matching keyword found.`);
-                prLabels.push("kind/other");
-              }
+              console.log(`Adding label: 'kind/other' as no matching keyword found.`);
+              prLabels.push("kind/other");
+            }
+
+            // Retrieve the PR's commits using the GitHub REST API
+            const commitsResponse = await github.request('GET /repos/{owner}/{repo}/pulls/{pull_number}/commits', {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.payload.pull_request.number
+            });
+            const commits = commitsResponse.data;
+
+            // Calculate the total size of the commits
+            let totalCommitSize = 0;
+            for (const commit of commits) {
+              totalCommitSize += commit.stats.total;
+            }
+
+            console.log(`Total commit size: ${totalCommitSize}`);
+
+            // Label the PR based on commit size
+            let sizeLabel;
+            if (totalCommitSize < 9) {
+              sizeLabel = 'size:XS';
+            } else if (totalCommitSize < 49) {
+              sizeLabel = 'size:S';
+            } else if (totalCommitSize < 249) {
+              sizeLabel = 'size:M';
+            } else if (totalCommitSize < 999) {
+              sizeLabel = 'size:L';
+            } else {
+              sizeLabel = 'size:XL';
+            }
 
             await github.issues.addLabels({
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: context.payload.pull_request.number,
-              labels: prLabels
+              labels: [...prLabels, sizeLabel]
             });
