@@ -34,7 +34,7 @@ jobs:
         uses: actions/github-script@v4
         with:
           async: yes
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          github-token: ${{ secrets.AGONES_BOT }}
           script: |
             const keywords = {
               "breaking": "kind/breaking",
