@@ -75,6 +75,36 @@ linters-settings:
       - performance
       - opinionated
       - diagnostic
+linters:
+  enable:
+    - bodyclose
+    - dupl
+    - exportloopref
+    - goconst
+    - gocritic
+    - gocyclo
+    - goimports
+    - govet
+    - megacheck
+    - misspell
+    - nakedret
+    - revive
+    - staticcheck
+    - unconvert
+    - unparam
+
+linters-settings:
+  govet:
+    disable-all: false
+    enable-all: true
+    disable:
+      # extremely noisy, also against common Go style in most cases
+      - shadow
+  gocritic:
+    enabled-tags:
+      - performance
+      - opinionated
+      - diagnostic
     disabled-checks:
       - paramTypeCombine
       - unnamedResult
