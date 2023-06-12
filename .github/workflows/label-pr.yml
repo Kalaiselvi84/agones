@@ -18,8 +18,12 @@
 name: Label PR
 
 on:
-  pull_request:
-    types: [opened]
+  pull_request_target:
+    types:
+      - opened
+      - reopened
+      - edited
+      - synchronize
 
 jobs:
   label:
@@ -31,6 +35,10 @@ jobs:
       issues: write
 
     steps:
+      - name: Print Environment Variable
+        run: |
+          github-token: ${{ TOKEN-AGONES.TOKEN }}
+
       - name: Label PR
         uses: actions/github-script@v4
         with:
@@ -59,13 +67,15 @@ jobs:
               console.log(`Adding label: 'kind/other' as no matching keyword found.`);
               prLabels.push("kind/other");
             }
-            try {
-              github.issues.addLabels({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                issue_number: context.payload.pull_request.number,
-                labels: prLabels
-              });
-            } catch (error) {
-              console.error(`Error retrieving files: ${error}`);
+            let url = 'https://api.github.com//repos/{owner}/{repo}/issues/{issue_number}/labels'
+            let data = {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.payload.pull_request.number,
+              labels: prLabels
             }
+            headers = {
+              'Authorization': ${{github-token}}
+            }
+            console.log(github-token, '${{ TOKEN-AGONES.TOKEN }}')
+            response = github.request(url, method='POST', data=data, headers=headers)
