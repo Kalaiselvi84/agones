@@ -35,6 +35,7 @@ jobs:
         id: label
         uses: actions/github-script@v4
         with:
+          async: yes
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const keywords = {
