@@ -18,7 +18,7 @@
 name: Label PR
 
 on:
-  pull_request:
+  pull_request_target:
     types: [opened]
 
 jobs:
@@ -32,6 +32,7 @@ jobs:
 
     steps:
       - name: Label PR
+        id: label
         uses: actions/github-script@v4
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
@@ -60,12 +61,14 @@ jobs:
               prLabels.push("kind/other");
             }
             try {
-              github.issues.addLabels({
+              const result = await github.issues.addLabels({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 issue_number: context.payload.pull_request.number,
                 labels: prLabels
               });
+              console.log(`Labels added successfully: ${result.data}`);
             } catch (error) {
-              console.error(`Error retrieving files: ${error}`);
+              console.error(`Error adding labels: ${error}`);
+              throw error;
             }
