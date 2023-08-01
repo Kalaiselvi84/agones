@@ -15,18 +15,32 @@
 # This workflow utilizes https://github.com/actions/github-script in GitHub Actions to apply labels to pull requests.
 #
 
+# Copyright 2023 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# This workflow utilizes https://github.com/actions/github-script in GitHub Actions to apply labels to pull requests.
+#
+
 name: Label PR
-
-on:
+"on":
   - pull_request_target
-
 jobs:
   label:
     runs-on: ubuntu-latest
     permissions:
       contents: read
       pull-requests: write
-
     steps:
       - name: Label PR
         uses: actions/github-script@v4
@@ -43,10 +57,10 @@ jobs:
             };
             const prBody = context.payload.pull_request.body;
             const prLabels = [];            
-            if (prBody === null) {
+            if (prBody === null || prBody.trim() === "") {
               console.log("Pull Request body is empty");
               prLabels.push("kind/other");
-            }
+            } else {
             const regex = /^\s*\/kind\s+(.+)$/m;
             const match = prBody.match(regex);
             console.log(`PR body: '${prBody}'`);
@@ -57,8 +71,9 @@ jobs:
               console.log(`Adding label: '${label}' based on keyword '${keyword}'`);
               prLabels.push(label);
             } else {
-              console.log(`Adding label: 'kind/other' as no matching keyword found.`);
-              prLabels.push("kind/other");
+                console.log(`Adding label: 'kind/other' as no matching keyword found.`);
+                prLabels.push("kind/other");
+              }
             }
             try {
               github.issues.addLabels({
@@ -68,5 +83,6 @@ jobs:
                 labels: prLabels
               });
             } catch (error) {
-              console.error(`Error retrieving files: ${error}`);
+                console.error(`Error retrieving files: ${error}`);
             }
+
