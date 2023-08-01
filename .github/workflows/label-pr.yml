@@ -42,11 +42,11 @@ jobs:
               "release": "kind/release"
             };
             const prBody = context.payload.pull_request.body;
+            const prLabels = [];            
             if (!prBody) {
               console.log("Pull Request body is empty");
               prLabels.push("kind/other");
             }
-            const prLabels = [];
             const regex = /^\s*\/kind\s+(.+)$/m;
             const match = prBody.match(regex);
             console.log(`PR body: '${prBody}'`);
