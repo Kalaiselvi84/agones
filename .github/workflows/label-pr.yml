@@ -43,7 +43,7 @@ jobs:
             };
             const prBody = context.payload.pull_request.body;
             const prLabels = [];            
-            if (!prBody) {
+            if (prBody === null) {
               console.log("Pull Request body is empty");
               prLabels.push("kind/other");
             }
