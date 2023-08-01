@@ -43,8 +43,8 @@ jobs:
             };
             const prBody = context.payload.pull_request.body;
             if (!prBody) {
-              console.log("Pull Request body is empty. Exiting without labeling.");
-              return;
+              console.log("Pull Request body is empty");
+              prLabels.push("kind/other");
             }
             const prLabels = [];
             const regex = /^\s*\/kind\s+(.+)$/m;
