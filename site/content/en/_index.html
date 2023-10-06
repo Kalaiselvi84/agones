@@ -26,8 +26,7 @@ linkTitle = "Agones"
 orchestration platform that can run anywhere <a class="text-primary" href="https://kubernetes.io">Kubernetes</a> can run.</p>
 {{% /blocks/lead %}}
 
-{{< blocks/section color="dark" >}}
-<div style="display: flex; justify-content: space-around; gap: 4%;">
+{{< blocks/section color="dark" type="row" >}}
 {{% blocks/feature icon="fas fa-file-code" title="Orchestrate Game Servers" url="./docs/getting-started/" %}}
 <p>Define and manage groups of ready gameservers through YAML configuration or API calls.</p>
 {{% /blocks/feature %}}
@@ -40,14 +39,13 @@ Tools for local development included!</p>
 
 
 {{% blocks/feature icon="fas fa-chart-area" title="Metrics and Monitoring" url="./docs/guides/metrics/" %}}
-<p>Integration with [OpenCensus](https://opencensus.io/)
+<p>Integration with <a href="https://opencensus.io/">OpenCensus</a>
 for platform-independent game server metrics and monitoring dashboards</p>
 {{% /blocks/feature %}}
 
-</div>
 {{< /blocks/section >}}
 
-{{< blocks/section color="primary" >}}
+{{< blocks/section color="primary" type="row" >}}
 <div class="col">
 	<h2 class="text-center pb-3">Companies using Agones</h2>
 	<p class="text-center showcase">
@@ -70,8 +68,7 @@ for platform-independent game server metrics and monitoring dashboards</p>
 </div>
 {{< /blocks/section >}}
 
-{{< blocks/section color="secondary"  >}}
-<div style="display: flex; justify-content: space-around;">
+{{< blocks/section color="secondary" type="row" >}}
 {{% blocks/feature icon="fab fa-slack" title="Join us on Slack" url="https://join.slack.com/t/agones/shared_invite/enQtMzE5NTE0NzkyOTk1LWU3ODAyZjdjMjNlYWIxZTAwODkxMGY3YWEyZjNjMjc4YWM1Zjk0OThlMGU2ZmUyMzRlMDljNDJiNmZlMGQ1M2U" url_text="Join us" %}}
 Join the community on Slack
 {{% /blocks/feature %}}
@@ -87,6 +84,4 @@ Join the community on Slack
 For announcement of latest features etc.
 {{% /blocks/feature %}}
 
-</div>
 {{< /blocks/section >}}
-

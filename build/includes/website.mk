@@ -36,13 +36,10 @@ site-server: ensure-build-image
 site-static: ensure-build-image
 	-docker run --rm $(common_mounts) --workdir=$(mount_path)/site $(DOCKER_RUN_ARGS) $(build_tag) rm -r ./public
 	-mkdir $(agones_path)/site/public
-	# for some reason, this only work locally
-	# postcss-cli@8.3.1 broke things, so pinning the version
 	docker run --rm $(common_mounts) --workdir=$(mount_path)/site $(DOCKER_RUN_ARGS) $(build_tag) \
-		bash -c "npm list postcss-cli || npm install postcss-cli@8.3.0"
-	# autoprefixer 10.0.0 broke things, so pinning the version
+		bash -c "npm list postcss || npm install -D postcss-cli"
 	docker run --rm $(common_mounts) --workdir=$(mount_path)/site $(DOCKER_RUN_ARGS) $(build_tag) \
-		bash -c "npm list autoprefixer || npm install autoprefixer@9.8.6"
+		bash -c "npm list autoprefixer || npm install -D autoprefixer"
 	docker run --rm $(common_mounts) --workdir=$(mount_path)/site $(DOCKER_RUN_ARGS) $(build_tag) bash -c \
         "git config --global --add safe.directory /go/src/agones.dev/agones &&  $(ENV) hugo --config=hugo.toml $(ARGS)"
 

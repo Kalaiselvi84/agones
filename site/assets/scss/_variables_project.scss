@@ -77,3 +77,16 @@ input[type="search"]::placeholder {
 .nav-link {
     margin-right: 20px !important;
 }
+
+// Bring this over from older Bootstrap.
+h1.display-1 {
+    font-size: 3rem;
+    font-weight: 500;
+    line-height: 1.2;
+}
+
+p.display-2 {
+    font-size: 2.5rem;
+    font-weight: 100;
+    line-height: 1.2;
+}

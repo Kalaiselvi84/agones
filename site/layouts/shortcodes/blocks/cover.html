@@ -3,16 +3,16 @@
 {{ $height := .Get "height" | default "max"  }}
 <section class="row td-cover-block td-cover-block--height-{{ $height }} js-td-cover td-overlay td-overlay--light -bg-{{ $col_id }}">
   <div class="container td-overlay__inner">
-    <div class="row align-items-end">
-      <div class="col-lg-4 mt-1 mb-2 mb-lg-0 ms-md-auto" style="padding-left: 1px; width: 500px;">
-        <div class="mb-4 h1">
+    <div class="row justify-content-center align-items-end">
+      <div class="col col-lg-3">
+          <h1 class="display-1 mt-0 pb-3">
             <img alt="agones" width="98" src="images/logo.svg" />
-            <strong style="font-weight: 500; font-size: 48px;">Agones</strong>
-        </div>
-        <h2 class="h2"><strong style="font-weight: 300; font-size: 38px;">Host, Run and Scale dedicated game servers on Kubernetes</strong></h2>
+              Agones
+          </h1>
+          <p class="display-2 mb-0">Host, Run and Scale dedicated game servers on Kubernetes</p>
       </div>
-      <div class="col-lg-6 mt-1 mt-lg-3 d-sm-block" style="display: none">
-          <asciinema-player 
+      <div class="col col-lg-3 mt-1 mt-lg-3 d-sm-block" style="display: none">
+          <asciinema-player
           loop autoplay font-size="12px" rows=12 cols=60
           src="agones.cast"></asciinema-player>
       </div>
