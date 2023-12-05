@@ -17,7 +17,103 @@ steps:
   #
   # Clean out the working dir, so we can replace it.
   #
-  - name: ubuntu
+    #
+  # Run the e2e tests with FeatureGates inverted compared to Stable
+  #
+  # Keep in sync with (the inverse of) pkg/util/runtime/features.go:featureDefaults
+  #
+  # Run the e2e tests with FeatureGates inverted compared to Stable
+  #
+  # Keep in sync with (the inverse of) pkg/util/runtime/features.go:featureDefaults
+  #
+  # Run the e2e tests with FeatureGates inverted compared to Stable
+  #
+  # Keep in sync with (the inverse of) pkg/util/runtime/features.go:featureDefaults
+  #
+  # Run the e2e tests with FeatureGates inverted compared to Stable
+  #
+  # Keep in sync with (the inverse of) pkg/util/runtime/features.go:featureDefaults
+  #
+  # Run the e2e tests with FeatureGates inverted compared to Stable
+  #
+  # Keep in sync with (the inverse of) pkg/util/runtime/features.go:featureDefaults
+  #
+  # Run the e2e tests with FeatureGates inverted compared to Stable
+  #
+  # Keep in sync with (the inverse of) pkg/util/runtime/features.go:featureDefaults
+  #
+  # Run the e2e tests with FeatureGates inverted compared to Stable
+  #
+  # Keep in sync with (the inverse of) pkg/util/runtime/features.go:featureDefaults
+  #
+  # Run the e2e tests with FeatureGates inverted compared to Stable
+  #
+  # Keep in sync with (the inverse of) pkg/util/runtime/features.go:featureDefaults
+  #
+  # Run the e2e tests with FeatureGates inverted compared to Stable
+  #
+  # Keep in sync with (the inverse of) pkg/util/runtime/features.go:featureDefaults
+  #
+  # Run the e2e tests with FeatureGates inverted compared to Stable
+  #
+  # Keep in sync with (the inverse of) pkg/util/runtime/features.go:featureDefaults
+  #
+  # Run the e2e tests with FeatureGates inverted compared to Stable
+  #
+  # Keep in sync with (the inverse of) pkg/util/runtime/features.go:featureDefaults
+  #
+  # Run the e2e tests with FeatureGates inverted compared to Stable
+  #
+  # Keep in sync with (the inverse of) pkg/util/runtime/features.go:featureDefaults
+  #
+  # Run the e2e tests with FeatureGates inverted compared to Stable
+  #
+  # Keep in sync with (the inverse of) pkg/util/runtime/features.go:featureDefaults
+  #
+  # Run the e2e tests with FeatureGates inverted compared to Stable
+  #
+  # Keep in sync with (the inverse of) pkg/util/runtime/features.go:featureDefaults
+  #
+  # Run the e2e tests with FeatureGates inverted compared to Stable
+  #
+  # Keep in sync with (the inverse of) pkg/util/runtime/features.go:featureDefaults
+  #
+  # Run the e2e tests with FeatureGates inverted compared to Stable
+  #
+  # Keep in sync with (the inverse of) pkg/util/runtime/features.go:featureDefaults
+  #
+  # Run the e2e tests with FeatureGates inverted compared to Stable
+  #
+  # Keep in sync with (the inverse of) pkg/util/runtime/features.go:featureDefaults
+  #
+  # Run the e2e tests with FeatureGates inverted compared to Stable
+  #
+  # Keep in sync with (the inverse of) pkg/util/runtime/features.go:featureDefaults
+  #
+  # Run the e2e tests with FeatureGates inverted compared to Stable
+  #
+  # Keep in sync with (the inverse of) pkg/util/runtime/features.go:featureDefaults
+  #
+  # Run the e2e tests with FeatureGates inverted compared to Stable
+  #
+  # Keep in sync with (the inverse of) pkg/util/runtime/features.go:featureDefaults
+  #
+  # Run the e2e tests with FeatureGates inverted compared to Stable
+  #
+  # Keep in sync with (the inverse of) pkg/util/runtime/features.go:featureDefaults
+  #
+  # Run the e2e tests with FeatureGates inverted compared to Stable
+  #
+  # Keep in sync with (the inverse of) pkg/util/runtime/features.go:featureDefaults
+  #
+  # Run the e2e tests with FeatureGates inverted compared to Stable
+  #
+  # Keep in sync with (the inverse of) pkg/util/runtime/features.go:featureDefaults
+  #
+  # Run the e2e tests with FeatureGates inverted compared to Stable
+  #
+  # Keep in sync with (the inverse of) pkg/util/runtime/features.go:featureDefaults
+- name: ubuntu
     script: rm *
 
   #
