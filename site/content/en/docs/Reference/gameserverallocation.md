@@ -224,7 +224,7 @@ spec:
       mode: deathmatch
     annotations:
       map:  garden22
-      # [Stage:Alpha]
+    # [Stage:Alpha]
     # [FeatureFlag:CountsAndLists]
     # The first Priority on the array of Priorities is the most important for sorting. The allocator will
     # use the first priority for sorting GameServers by available Capacity in the Selector set. Acts as a

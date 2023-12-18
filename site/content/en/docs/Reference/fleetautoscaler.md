@@ -100,7 +100,7 @@ spec:
       bufferSize: 5
       # MinCapacity is the minimum aggregate Counter total capacity across the fleet.
       # If BufferSize is specified as a percentage, MinCapacity is required and cannot be 0.
-      # If non zero, MinCapacity must be smaller than MaxCapacity and it can be greater than or equal to BufferSize.
+      # If non zero, MinCapacity must be smaller than MaxCapacity and must be greater than or equal to BufferSize.
       minCapacity: 10
       # MaxCapacity is the maximum aggregate Counter total capacity across the fleet.
       # MaxCapacity must be greater than or equal to both MinCapacity and BufferSize. Required field.
@@ -127,8 +127,8 @@ spec:
       # Must be bigger than 0. Required field.
       bufferSize: 5
       # MinCapacity is the minimum aggregate List total capacity across the fleet.
-      # If zero, it is ignored.
-      # If non zero, it must be smaller than MaxCapacity and can be greater than or equal to BufferSize.
+      # If BufferSize is specified as a percentage, MinCapacity is required must be greater than 0.
+      # If non zero, MinCapacity must be smaller than MaxCapacity and must be greater than or equal to BufferSize.
       minCapacity: 10
       # MaxCapacity is the maximum aggregate List total capacity across the fleet.
       # MaxCapacity must be greater than or equal to both MinCapacity and BufferSize. Required field.
